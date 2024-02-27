@@ -21,14 +21,9 @@ const handleRemoveImage = (image, element, seTimgFiles, setActiveIndex) => {
 export const ImageRow = ({ image, seTimgFiles, setActiveIndex }) => {
   const ref = useRef();
   const [scale, setScale] = useState(0);
- 
+
   //Post
 
-
-
-
-
-  
   return (
     <Swiper
       direction={'vertical'}
@@ -116,7 +111,7 @@ const CreateAnnouncement = () => {
     formState: { errors },
     control,
     setValue,
-    getValues,
+    getValues
     // setError
   } = useForm({
     defaultValues: {
@@ -134,71 +129,67 @@ const CreateAnnouncement = () => {
   });
 
   const onSubmit = async (values) => {
-    console.log(values);
-  
-    await axios.post("https://api.frossh.uz/api/announcement/create", {
-      description: values.comment,
-      price: 100,
-      calculation_method: 'm2',
-      place_type:values.tur,
-      repair_type: "good",
-      sale_type: 'rent',
-      advance: true,
-      _advance_month: 1,
-      get advance_month() {
-        return this._advance_month;
-      },
-      set advance_month(value) {
-        this._advance_month = value;
-      },
-      bargain: true,
-      room_floor: 10,
-      room_count: 10,
-      construction_year:values.year_of_construction,
-      m2: 1,
-      amenities:['fgdf','df'],
-      address:values.address,
-      latitude: 1,
-      longitude: 1,
-      photo: imgFiles.path
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer 24|kprfqUJJt2KWxijsD318ueJNxDCiLN2MNiAmdQV1f1ec29ff`,
-        'Accept': 'application/json'
-      },
-    })
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.log(error.response.data);
-    });
-  
-    console.log(values);
-  }
-  
-  
+    console.log(values.image);
+
+    // Создаем экземпляр FormData
+    let formData = new FormData();
+
+    // Добавляем все необходимые поля
+    formData.append('description', values.comment);
+    formData.append('price', 100);
+    formData.append('calculation_method', 'm2');
+    formData.append('place_type', values.tur);
+    formData.append('repair_type', 'good');
+    formData.append('sale_type', 'rent');
+    formData.append('advance', true);
+    formData.append('bargain', true);
+    formData.append('advance_month', 1);
+    formData.append('room_floor', 10);
+    formData.append('room_count', 10);
+    formData.append('construction_year', values.year_of_construction);
+    formData.append('m2', 1);
+    formData.append('amenities[0]', '1');
+    formData.append('address', values.address);
+    formData.append('latitude', 1);
+    formData.append('longitude', 1);
+
+    // Добавляем файлы
+    // Предполагается, что imgFiles - это массив с файлами
+    formData.append(`photo[0]`, values.image[0]);
+
+    await axios
+      .post('https://api.frossh.uz/api/announcement/create', formData, {
+        headers: {
+          Authorization: `Bearer 10|NNYTVarOosSk6cHm5JUG9w3jmDCOrptNaf8dhCqk8fabc4d0`,
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json'
+        }
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
   //7|fGZeUzq2Eoee4zyTI8dyJ93IXIPtgQAgYNcPzuDqc207ae98
-//   {
-//     "description":"yahsi",
-//     "price":100,
-//     "calculation_method":"m2",
-//     "place_type":"apartment",
-//     "repair_type":"good",
-//     "sale_type":"rent",
-//     "advance":true,
-//     "advance_month":1,
-//     "bargain":true,
-//     "room_floor ":10,
-//     "room_count":10,
-//     "construction_year":2010,
-//     "m2":10
+  //   {
+  //     "description":"yahsi",
+  //     "price":100,
+  //     "calculation_method":"m2",
+  //     "place_type":"apartment",
+  //     "repair_type":"good",
+  //     "sale_type":"rent",
+  //     "advance":true,
+  //     "advance_month":1,
+  //     "bargain":true,
+  //     "room_floor ":10,
+  //     "room_count":10,
+  //     "construction_year":2010,
+  //     "m2":10
 
-
-// }
-
-
+  // }
 
   const handleGetCordinate = (value) => {
     if (!value) return null;
@@ -235,7 +226,7 @@ const CreateAnnouncement = () => {
 
   return (
     <form className="container announcements" onSubmit={handleSubmit(onSubmit)}>
-    {/* <button onClick={onSubmit1}>sdgdgdf</button> */}
+      {/* <button onClick={onSubmit1}>sdgdgdf</button> */}
       <div className="row">
         <div className="space">
           <div className="inner">
@@ -257,6 +248,7 @@ const CreateAnnouncement = () => {
                 accept="image/*"
                 multiple
                 onChange={handleFileSelection}
+                {...register('image', { required: true })}
               />
             </label>
             {imgFiles.length > 0 && (

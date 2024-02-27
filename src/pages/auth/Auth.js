@@ -285,7 +285,9 @@ export default function Auth() {
 
               
                 
-                  <div><input {...register("date", { required: true })} type="date" placeholder="Familiyangiz" />
+                  <div>
+                    
+                    <input {...register("date", { required: true })} type="date" placeholder="date" />
                 
                 {errors.lastName && <span>This field is required</span>}
                 
@@ -310,7 +312,7 @@ export default function Auth() {
             </span></div>)}
 
 
-            {refresh ? (  <div>
+            {refresh ? (  <div className='refresh'>
 <input {...register("firstName", { required: true })} type="text" placeholder="Ismingiz" />
                 {errors.firstName && <span>This field is required</span>}
                 <input {...register("lastName", { required: true })} type="text" placeholder="Familiyangiz" />
