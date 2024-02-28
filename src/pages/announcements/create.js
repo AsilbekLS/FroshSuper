@@ -136,27 +136,27 @@ const CreateAnnouncement = () => {
 
     // Добавляем все необходимые поля
     formData.append('description', values.comment);
-    formData.append('price', 100);
-    formData.append('calculation_method', 'm2');
-    formData.append('place_type', values.tur);
-    formData.append('repair_type', 'good');
+    formData.append('price', '100');
+    formData.append('calculation_method', values.tur);
+    formData.append('place_type', values.type);
+    formData.append('repair_type', values.holati);
     formData.append('sale_type', 'rent');
-    formData.append('advance', true);
-    formData.append('bargain', true);
-    formData.append('advance_month', 1);
-    formData.append('room_floor', 10);
-    formData.append('room_count', 10);
+    formData.append('advance', '0');
+    formData.append('bargain', '1');
+    // formData.append('advance_month', '1');
+     formData.append('room_floor', '10');
+    formData.append('room_count', '10');
     formData.append('construction_year', values.year_of_construction);
-    formData.append('m2', 1);
+    formData.append('m2', '200');
     formData.append('amenities[0]', '1');
     formData.append('address', values.address);
-    formData.append('latitude', 1);
-    formData.append('longitude', 1);
+    formData.append('latitude', '1');
+    formData.append('longitude', '0');
 
     // Добавляем файлы
     // Предполагается, что imgFiles - это массив с файлами
     formData.append(`photo[0]`, values.image[0]);
-
+console.log(values);
     await axios
       .post('https://api.frossh.uz/api/announcement/create', formData, {
         headers: {

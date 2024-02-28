@@ -1,10 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from 'components/card';
 import { createPagination } from 'utils/createPagination';
+import axios from 'axios';
 
 const Announcements = () => {
   const data = Array.from({ length: 800 }, (_, i) => i + 1);
   const [currentPage, setCurrentPage] = useState(1);
+const [anount,setAnount]=useState([])
+
+
+const api = axios.create({
+  baseURL: 'https://api.frossh.uz/api/announcement/get-by-moderation', // Замените на ваш базовый URL
+  headers: {
+    'Authorization': 'Bearer 13|Jo8fyv4DH1awgqURghcTChgVTfo1A4sjwlOD51Dw306045b1', // Замените на ваш токен
+    'Content-Type': 'application/json', // Пример другого заголовка
+  },
+});
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await api.get('https://api.frossh.uz/api/announcement/get-by-moderation');
+     await setAnount(response.data);
+      console.log(response.data);
+      console.log(anount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchData();
+}, []);
+
   return (
     <div className="container">
       <h2 className="title">{'Top E’lonlar'}</h2>
