@@ -15,7 +15,7 @@ import Cookies from 'js-cookie';
 export default function Auth() {
   const [islogin, setIslogin] = useState(false);
   const [num, setNum] = useState();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit,reset , formState: { errors } } = useForm();
   const [sms, setSms] = useState(false);
   const [otp, setOtp] = useState('');
   const [code, setCode] = useState(true);
@@ -73,7 +73,7 @@ export default function Auth() {
       }
     });
   setNum(data.phone)
-    
+    reset()
   }
  
 //Code/verification
@@ -155,13 +155,14 @@ export default function Auth() {
         console.log('omad');
         setNum(data.phone)
         setSms(true)
+        console.log(sms);
               }
     })
     .catch(error => {
       console.log(error.response.data);
       console.log('hato');
     });
-
+reset()
   }
 
 
@@ -256,6 +257,8 @@ export default function Auth() {
     Cookies.remove('token')
    
     setUnreg(false)
+  
+    reset();
   }
   
 
@@ -322,7 +325,7 @@ export default function Auth() {
 
             <button  type="submit">Sms kod yuborish</button>
             {refresh ? (<button  onClick={()=>setRefresh(false)} >Back</button>) :null}
-            {islogin ? (<button onClick={onSubmit6}>Log out</button>): null}
+            {islogin ? (<button onClick={()=>onSubmit6()}>Log out</button>): null}
             {islogin ? (<button onClick={(()=>setRefresh(true))}>Refresh</button>): null}
             
         
